@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:category_widget/category.dart';
+import 'package:category_widget/unit.dart';
 
 final _backgroundColor = Colors.green[100];
 
@@ -46,19 +47,34 @@ class CategoryRoute extends StatelessWidget {
     );
   }
 
+  /// Returns a list of mock [Unit]s.
+  List<Unit> _retrieveUnitList(String categoryName) {
+    return List.generate(10, (int i) {
+      i += 1;
+      return Unit('$categoryName Unit $i', i.toDouble());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _categories = List<Category>.generate(
-        8, (int i) => Category(_categoryNames[i], _baseColors[i], Icons.cake));
+    final categories = <Category>[];
 
+    for (var i = 0; i < _categoryNames.length; i++) {
+      categories.add(Category(
+        _categoryNames[i],
+        _baseColors[i],
+        Icons.cake,
+        _retrieveUnitList(_categoryNames[i]),
+      ));
+    }
     final listView = Container(
       color: _backgroundColor,
       padding: EdgeInsets.symmetric(horizontal: 8.0),
-      child: _buildCategoryWidgets(_categories),
+      child: _buildCategoryWidgets(categories),
     );
 
-    // TODO: Create an App Bar
     final appBar = AppBar(
+      elevation: 0.0,
       title: Center(
         child: const Text(
           'Unit Converter',
@@ -66,7 +82,7 @@ class CategoryRoute extends StatelessWidget {
         ),
       ),
       backgroundColor: _backgroundColor,
-      elevation: 0.0,
+      centerTitle: true,
     );
 
     return Scaffold(
