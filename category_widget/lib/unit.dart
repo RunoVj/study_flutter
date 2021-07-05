@@ -12,7 +12,10 @@ class Unit {
   /// A [Unit] stores its name and conversion factor.
   ///
   /// An example would be 'Meter' and '1.0'.
-  const Unit(this.name, this.conversion);
+  const Unit({
+    required this.name,
+    required this.conversion,
+  });
 
   /// Creates a [Unit] from a JSON object.
   Unit.fromJson(Map jsonMap)

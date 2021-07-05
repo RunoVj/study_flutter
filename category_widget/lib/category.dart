@@ -16,7 +16,7 @@ final _borderRadius = BorderRadius.circular(_rowHeight / 2);
 /// a colored [InkWell] animation.
 class Category extends StatelessWidget {
   final String name;
-  final Color color;
+  final ColorSwatch color;
   final IconData iconLocation;
   final List<Unit> units;
   /// Creates a [Category].
@@ -24,17 +24,38 @@ class Category extends StatelessWidget {
   /// A [Category] saves the name of the Category (e.g. 'Length'), its color for
   /// the UI, and the icon that represents it (e.g. a ruler).
 
-  const Category(this.name, this.color, this.iconLocation, this.units);
+  const Category({
+    Key? key,
+    required this.name,
+    required this.color,
+    required this.iconLocation,
+    required this.units,
+  })  : super(key: key);
+
 
   /// Navigates to the [ConverterRoute].
   void _navigateToConverter(BuildContext context) {
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
-    }
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return ConverterRoute(units, color);
-      }
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 1.0,
+            title: Text(
+              name,
+              style: Theme.of(context).textTheme.display1,
+            ),
+            centerTitle: true,
+            backgroundColor: color,
+          ),
+          body: ConverterRoute(
+            color: color,
+            units: units,
+          ),
+          // This prevents the attempt to resize the screen when the keyboard
+          // is opened
+          resizeToAvoidBottomInset: false,
+        );
+      },
     ));
   }
 
